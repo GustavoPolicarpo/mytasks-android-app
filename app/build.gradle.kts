@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.aduilio.mytasks"
+    namespace = "com.policarpo.mytasks"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.aduilio.mytasks"
+        applicationId = "com.policarpo.mytasks"
         minSdk = 26
         targetSdk = 34
         versionCode = 1000
