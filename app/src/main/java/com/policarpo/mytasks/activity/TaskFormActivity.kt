@@ -10,7 +10,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.policarpo.mytasks.databinding.ActivityTaskFormBinding
 import com.policarpo.mytasks.entity.Task
+import com.policarpo.mytasks.entity.TaskDto
+import com.policarpo.mytasks.entity.TaskValidator
+import com.policarpo.mytasks.extension.value
 import com.policarpo.mytasks.service.TaskService
+import java.time.LocalDate
+import java.time.LocalTime
 
 class TaskFormActivity : AppCompatActivity() {
 
@@ -40,12 +45,27 @@ class TaskFormActivity : AppCompatActivity() {
 
     private fun initComponents() {
         binding.btSave.setOnClickListener {
-            val task = Task(title = binding.etTitle.text.toString(), id = taskId)
-            taskService.save(task).observe(this) { responseDto ->
-                if (responseDto.isError) {
-                    Toast.makeText(this, "Erro com o servidor", Toast.LENGTH_SHORT).show()
-                } else {
-                    finish()
+            val taskDto = TaskDto(
+                taskId,
+                binding.etTitle.text.toString(),
+                binding.etDescription.text.toString(),
+                binding.etDate.text.toString(),
+                binding.etTime.text.toString()
+            )
+
+            val validation = taskDto.validateTask()
+            if (!validation.first){
+                Toast.makeText(this, validation.second, Toast.LENGTH_LONG).show()
+            }
+            else{
+                val task = taskDto.toTask()
+
+                taskService.save(task).observe(this) { responseDto ->
+                    if (responseDto.isError) {
+                        Toast.makeText(this, "Erro com o servidor", Toast.LENGTH_SHORT).show()
+                    } else {
+                        finish()
+                    }
                 }
             }
         }
@@ -56,6 +76,9 @@ class TaskFormActivity : AppCompatActivity() {
         (intent.extras?.getSerializable("task") as Task?)?.let { task ->
             taskId = task.id
             binding.etTitle.setText(task.title)
+            binding.etDescription.setText(task.description)
+            binding.etDate.setText(task.date?.let { task.date.toString() } ?: run { null })
+            binding.etTime.setText(task.time?.let { task.time.toString() } ?: run { null })
 
             if (task.completed) {
                 binding.btSave.visibility = View.INVISIBLE
