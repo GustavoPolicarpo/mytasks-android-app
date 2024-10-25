@@ -29,6 +29,12 @@ class TaskViewHolder(
             "-"
         }
 
+        binding.tvTime.text = task.time?.let {
+            task.time.toString()
+        } ?: run {
+            "-"
+        }
+
         binding.root.setOnClickListener {
             listener.onClick(task)
         }
