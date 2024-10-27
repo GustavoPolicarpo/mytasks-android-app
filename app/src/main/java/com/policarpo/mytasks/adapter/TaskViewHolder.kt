@@ -25,6 +25,7 @@ class TaskViewHolder(
         if (task.completed) {
             binding.tvTitle.setBackgroundResource(R.color.green_700)
         } else {
+            binding.tvTitle.setBackgroundResource(R.color.blue_700)
             task.date?.let {
                 val today = LocalDate.now()
                 if (it.isBefore(today)){
@@ -33,8 +34,6 @@ class TaskViewHolder(
                 else if(it.isEqual(today)){
                     binding.tvTitle.setBackgroundResource(R.color.yellow_700)
                 }
-            } ?: run{
-                binding.tvTitle.setBackgroundResource(R.color.blue_700)
             }
         }
 
