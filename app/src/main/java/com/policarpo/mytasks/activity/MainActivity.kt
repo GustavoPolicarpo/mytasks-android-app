@@ -165,13 +165,24 @@ class MainActivity : AppCompatActivity() {
         ItemTouchHelper(TaskItemTouchCallback(object : TaskItemSwipeListener {
             override fun onSwipe(position: Int) {
                 val task = tasksAdapter.getItem(position)
-                taskService.delete(task).observe(this@MainActivity) { responseDto ->
-                    if (responseDto.isError) {
-                        tasksAdapter.refreshItem(position)
-                    } else {
-                        tasksAdapter.deleteItem(position)
+                val builder = AlertDialog.Builder(this@MainActivity)
+                builder.setTitle("Delete Task")
+                builder.setMessage("Are you sure you want to delete the task \"${task.title}\"?")
+                builder.setPositiveButton("Yes") { dialog, _ ->
+                    taskService.delete(task).observe(this@MainActivity) { responseDto ->
+                        if (responseDto.isError) {
+                            tasksAdapter.refreshItem(position)
+                        } else {
+                            tasksAdapter.deleteItem(position)
+                        }
                     }
+                    dialog.dismiss()
                 }
+                builder.setNegativeButton("No") { dialog, _ ->
+                    tasksAdapter.refreshItem(position)
+                    dialog.dismiss()
+                }
+                builder.create().show()
             }
         })).attachToRecyclerView(binding.rvTasks)
 
