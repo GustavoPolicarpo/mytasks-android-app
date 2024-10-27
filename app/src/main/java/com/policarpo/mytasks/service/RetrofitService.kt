@@ -4,6 +4,7 @@ import com.policarpo.mytasks.adapter.LocalDateAdapter
 import com.policarpo.mytasks.adapter.LocalTimeAdapter
 import com.policarpo.mytasks.repository.TaskRepository
 import com.google.gson.GsonBuilder
+import com.policarpo.mytasks.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
@@ -18,7 +19,7 @@ class RetrofitService {
 
     init {
         val retrofit = Retrofit.Builder()
-                .baseUrl("http://172.29.193.99:8080/")
+                .baseUrl(BuildConfig.BASE_URL)
                 .client(configureClient())
                 .addConverterFactory(configureConverter())
                 .build()

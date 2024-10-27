@@ -5,6 +5,8 @@ plugins {
 }
 
 android {
+    android.buildFeatures.buildConfig = true
+
     namespace = "com.policarpo.mytasks"
     compileSdk = 34
 
@@ -14,8 +16,8 @@ android {
         targetSdk = 34
         versionCode = 1000
         versionName = "1.1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "BASE_URL", "\"http://172.29.193.99:8080/\"")
     }
 
     buildTypes {
