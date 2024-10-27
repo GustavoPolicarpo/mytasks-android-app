@@ -2,11 +2,15 @@ package com.policarpo.mytasks.adapter
 
 import android.content.Context
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.policarpo.mytasks.R
 import com.policarpo.mytasks.databinding.TaskListItemBinding
 import com.policarpo.mytasks.entity.Task
+import com.policarpo.mytasks.fragment.PreferenceFragment
 import com.policarpo.mytasks.listener.TaskItemClickListener
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class TaskViewHolder(
     private val context: Context,
@@ -23,8 +27,16 @@ class TaskViewHolder(
             binding.tvTitle.setBackgroundResource(R.color.blue_700)
         }
 
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val isFullDate = sharedPreferences.getBoolean(PreferenceFragment.DATE_FORMAT_KEY, false)
+
         binding.tvDate.text = task.date?.let {
-            task.date.toString()
+            if (isFullDate){
+                val fullDateFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM dd, yyyy", Locale.getDefault())
+                task.date!!.format(fullDateFormatter)
+            }else{
+                task.date.toString()
+            }
         } ?: run {
             "-"
         }

@@ -12,6 +12,9 @@
     <string name="daily_notification_off">Não receber notificações diárias</string>
     <string name="daily_notification_on">Receber notificações diárias</string>
     <string name="daily_notification">Notificação diária</string>
+    <string name="date_format_1">Usar nome do mês</string>
+    <string name="date_format_2">Usar número do mês</string>
+    <string name="date_format">Formato de Data</string>
     <string name="settings">Configurações</string>
     <string name="email">E-mail</string>
     <string name="password">Senha</string>

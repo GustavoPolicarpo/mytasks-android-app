@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/notifications">
-
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/notifications" >
         <SwitchPreferenceCompat
             android:key="daily_notification"
             android:summaryOff="@string/daily_notification_off"
             android:summaryOn="@string/daily_notification_on"
-            android:title="@string/daily_notification" />
+            android:title="@string/daily_notification"
+            app:defaultValue="false" />
+    </PreferenceCategory>
 
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/settings">
+        <SwitchPreferenceCompat
+            android:key="date_format"
+            android:title="@string/date_format"
+            app:defaultValue="false"
+            app:summaryOff="@string/date_format_2"
+            app:summaryOn="@string/date_format_1" />
     </PreferenceCategory>
 
 </PreferenceScreen>
