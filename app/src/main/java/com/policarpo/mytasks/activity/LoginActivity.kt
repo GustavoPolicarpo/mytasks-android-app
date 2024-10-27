@@ -30,50 +30,78 @@ class LoginActivity : AppCompatActivity() {
         binding.btCreateAccount.setOnClickListener {
             createAccount()
         }
+
+        binding.btAnonymous.setOnClickListener {
+            anonymous()
+        }
+    }
+
+    private fun anonymous() {
+        Firebase.auth.signInAnonymously()
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.e("auth", "signInAnonymously:failure", task.exception)
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            }
     }
 
     private fun login() {
-        Firebase.auth.signInWithEmailAndPassword(binding.etEmail.value(), binding.etPassword.value())
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        finish()
-                        startActivity(Intent(this, MainActivity::class.java))
-                    } else {
-                        Log.e("auth", "createUserWithEmail:failure", task.exception)
+        Firebase.auth.signInWithEmailAndPassword(
+            binding.etEmail.value(),
+            binding.etPassword.value()
+        )
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    finish()
+                    startActivity(Intent(this, MainActivity::class.java))
+                } else {
+                    Log.e("auth", "createUserWithEmail:failure", task.exception)
 
-                        task.exception?.message?.let { errorMessage ->
-                            binding.tilEmail.error = errorMessage
-                        }
-
-                        Toast.makeText(
-                            baseContext,
-                            "Authentication failed.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                    task.exception?.message?.let { errorMessage ->
+                        binding.tilEmail.error = errorMessage
                     }
+
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 }
+            }
 
     }
 
     private fun createAccount() {
-        Firebase.auth.createUserWithEmailAndPassword(binding.etEmail.value(), binding.etPassword.value())
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        login()
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.e("auth", "createUserWithEmail:failure", task.exception)
+        Firebase.auth.createUserWithEmailAndPassword(
+            binding.etEmail.value(),
+            binding.etPassword.value()
+        )
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    login()
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.e("auth", "createUserWithEmail:failure", task.exception)
 
-                        task.exception?.message?.let { errorMessage ->
-                            binding.tilEmail.error = errorMessage
-                        }
-
-                        Toast.makeText(
-                            baseContext,
-                            "Authentication failed.",
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                    task.exception?.message?.let { errorMessage ->
+                        binding.tilEmail.error = errorMessage
                     }
+
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 }
+            }
     }
 }
