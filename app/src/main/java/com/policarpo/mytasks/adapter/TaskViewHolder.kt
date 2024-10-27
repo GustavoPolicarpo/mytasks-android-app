@@ -9,6 +9,7 @@ import com.policarpo.mytasks.databinding.TaskListItemBinding
 import com.policarpo.mytasks.entity.Task
 import com.policarpo.mytasks.fragment.PreferenceFragment
 import com.policarpo.mytasks.listener.TaskItemClickListener
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -24,7 +25,17 @@ class TaskViewHolder(
         if (task.completed) {
             binding.tvTitle.setBackgroundResource(R.color.green_700)
         } else {
-            binding.tvTitle.setBackgroundResource(R.color.blue_700)
+            task.date?.let {
+                val today = LocalDate.now()
+                if (it.isBefore(today)){
+                    binding.tvTitle.setBackgroundResource(R.color.red_700)
+                }
+                else if(it.isEqual(today)){
+                    binding.tvTitle.setBackgroundResource(R.color.yellow_700)
+                }
+            } ?: run{
+                binding.tvTitle.setBackgroundResource(R.color.blue_700)
+            }
         }
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
